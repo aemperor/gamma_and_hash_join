@@ -5,6 +5,7 @@ import java.io.IOException;
 import support.basicConnector.Connector;
 import support.basicConnector.ReadEnd;
 import support.gammaSupport.ReportError;
+import support.gammaSupport.ThreadList;
 import support.gammaSupport.Tuple;
 
 public class Print extends Thread {
@@ -13,6 +14,7 @@ public class Print extends Thread {
 	
 	public Print(Connector c) {
 		this.c = c;
+		ThreadList.add(this);
 	}
 	
 	public void run() {
