@@ -28,6 +28,7 @@ public class Print extends Thread {
 				Tuple t = null;
 				while( waitForMessage){
 					line = re.getNextString();
+					if (line != null )
 					if (line.indexOf("END") == 0) {
 						waitForMessage = false;
 					} else {
