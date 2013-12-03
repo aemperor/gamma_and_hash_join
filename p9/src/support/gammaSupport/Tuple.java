@@ -62,6 +62,17 @@ public class Tuple {
         return t;
      }
 
+    public void printTuple () {
+    	StringBuffer out = new StringBuffer();
+    	for(int i = 0; i < field.length - 1; ++i) {
+    		out.append(field[i] + "\t");
+    	}
+    	out.append(field[field.length-1]);
+    	
+    	System.out.println(out.toString());
+    	
+    } 
+    
     public void println(Relation r) {
         String[] fieldNames = r.getFieldNames();
         for (int i=0; i<size; i++) {
