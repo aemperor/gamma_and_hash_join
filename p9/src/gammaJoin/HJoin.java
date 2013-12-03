@@ -53,9 +53,8 @@ public class HJoin extends Thread {
 			try {
 				String line = null;
 				Tuple t = null;
-				while( continueReading ){
-					line = input1.getNextString();
-					if (line!= null && line.indexOf("END") == 0) {
+				while( (line = input1.getNextString() ) != null){
+					if (line.indexOf("END") == 0) {
 						continueReading = false;
 					} else {
 						t = Tuple.makeTupleFromPipeData(line);
@@ -85,8 +84,7 @@ public class HJoin extends Thread {
 			try {
 				String line = null;
 				Tuple t2 = null;
-				while( continueReading ){
-					line = input2.getNextString();
+				while( (line = input2.getNextString()) != null ){
 					if (line.indexOf("END") == 0) {
 						continueReading = false;
 					} else {
