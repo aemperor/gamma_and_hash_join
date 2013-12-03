@@ -35,8 +35,11 @@ public class ArrayConnectors  implements GammaConstants {
     public static Connector[][] diagonalize (Connector[] in) {
         int i, j;
         Connector[][] out = new Connector[splitLen][splitLen];
-        for (i=0; i<splitLen; i++) for (j=0; j<splitLen; j++) out[i][j]= null;
-        for (i=0; i<splitLen; i++) out[i][i] = in[i];
+        for (i=0; i<splitLen; i++) 
+        	for (j=0; j<splitLen; j++) 
+        		out[i][j]= null;
+        for (i=0; i<splitLen; i++)
+        	out[i][i] = in[i];
         return out;
     }
 
@@ -46,7 +49,9 @@ public class ArrayConnectors  implements GammaConstants {
         int i, j;
 
         Connector[][] xirtam = new Connector[splitLen][splitLen];
-        for (i=0; i<splitLen; i++) for (j=0; j<splitLen; j++) xirtam[j][i] = matrix[i][j];
+        for (i=0; i<splitLen; i++) 
+        	for (j=0; j<splitLen; j++) 
+        		xirtam[j][i] = matrix[i][j];
         
         return xirtam;
     }

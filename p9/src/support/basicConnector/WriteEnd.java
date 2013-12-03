@@ -5,9 +5,11 @@
 
 package support.basicConnector;
 
+import java.io.IOException;
+import java.io.PrintStream;
+
 import support.gammaSupport.Relation;
 import support.gammaSupport.Tuple;
-import java.io.PrintStream;
 
 /**
  *
@@ -23,13 +25,13 @@ public class WriteEnd   {
         out = c.out;
     }
 
-    public void putNextTuple( Tuple t ) throws Exception {
+    public void putNextTuple( Tuple t ) throws IOException {
         String e = t.toString();
         out.println(e);
         out.flush();
     }
 
-    public void putNextString( String s ) throws Exception {
+    public void putNextString( String s ) throws IOException {
         out.println(s);
         out.flush();
     }

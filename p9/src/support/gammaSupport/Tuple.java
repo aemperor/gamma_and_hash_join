@@ -5,7 +5,7 @@
 
 package support.gammaSupport;
 
-import java.util.*;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -34,9 +34,10 @@ public class Tuple {
     // note that the tuple begins with its size (in fields)
     @Override
     public String toString() {
-        String result = size + separator;
-        for (String i : field) result = result + i + separator;
-        return result;
+    	StringBuffer res = new StringBuffer(size + separator);
+        for (String i : field) 
+        	res.append(i + separator);
+        return res.toString();
     }
 
     // this constructor unserializes a string into a tuple

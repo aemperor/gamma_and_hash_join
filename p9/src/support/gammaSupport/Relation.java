@@ -4,6 +4,7 @@
  */
 package support.gammaSupport;
 
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 /**
@@ -34,6 +35,15 @@ public class Relation {
         fieldNames[counter++] = fName;
     }
 
+    public static Relation buildRelationFromString(String name, String line) {
+    	StringTokenizer st = new StringTokenizer(line);
+    	Relation r = new Relation(name, st.countTokens());
+    	while(st.hasMoreTokens() ) {
+    		r.addField(st.nextToken());
+    	}
+    	return r;
+    }
+    
     public String[] getFieldNames() {
         return fieldNames;
     }

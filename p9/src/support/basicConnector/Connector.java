@@ -5,10 +5,15 @@
 
 package support.basicConnector;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
+import java.util.LinkedList;
+
 import support.gammaSupport.Relation;
 import support.gammaSupport.ReportError;
-import java.io.*;
-import java.util.LinkedList;
 
 /**
  *
@@ -23,6 +28,8 @@ public class Connector {
     public String name;
 
     // constructors
+    
+    
     private Connector() { /* should never be called */ }
 
     public Connector(String name) {

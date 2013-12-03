@@ -5,9 +5,11 @@
 
 package support.basicConnector;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import support.gammaSupport.Relation;
 import support.gammaSupport.Tuple;
-import java.io.BufferedReader;
 
 /**
  *
@@ -25,14 +27,14 @@ public class ReadEnd  {
     }
 
     // instance methods
-    public Tuple getNextTuple() throws Exception {
+    public Tuple getNextTuple() throws IOException {
         String ts = b.readLine();
         if (ts == null) return null;
         Tuple t = Tuple.makeTupleFromPipeData(ts);
         return t;
     }
 
-    public String getNextString() throws Exception {
+    public String getNextString() throws IOException {
         return b.readLine();
     }
 
