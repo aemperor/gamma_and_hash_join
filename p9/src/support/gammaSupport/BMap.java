@@ -136,7 +136,9 @@ public class BMap implements GammaConstants {
         return Math.abs(x.hashCode());
     }
     
-    public int getSize() {
-    	return length();
+    // added by Alexis
+    public boolean[][] getMap() {
+    	return map;
     }
+    
 }
