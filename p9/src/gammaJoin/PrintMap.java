@@ -4,7 +4,6 @@ import support.basicConnector.Connector;
 import support.basicConnector.ReadEnd;
 import support.gammaSupport.ReportError;
 import support.gammaSupport.ThreadList;
-import support.gammaSupport.Tuple;
 import support.gammaSupport.BMap;
 
 public class PrintMap extends Thread {
@@ -18,7 +17,7 @@ public class PrintMap extends Thread {
 	
 	public void run() {
 		BMap bit = readMap();
-		System.out.println(bit.toString());
+		System.out.println(bit.toString()); // not sure if can be printed this way 
 	}
 	
 	private BMap readMap() {
@@ -44,7 +43,7 @@ public class PrintMap extends Thread {
 			
 		}
 		
-		
+		assert readMap != null;
 		return readMap;
 	}
 }
