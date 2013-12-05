@@ -135,4 +135,10 @@ public class BMap implements GammaConstants {
     private static int hsh(String x) {
         return Math.abs(x.hashCode());
     }
+    
+    // added by Alexis
+    public boolean[][] getMap() {
+    	return map;
+    }
+    
 }
