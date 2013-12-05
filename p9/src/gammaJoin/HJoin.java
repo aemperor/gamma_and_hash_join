@@ -9,6 +9,7 @@ import java.util.List;
 import support.basicConnector.Connector;
 import support.basicConnector.ReadEnd;
 import support.basicConnector.WriteEnd;
+import support.gammaSupport.Relation;
 import support.gammaSupport.ReportError;
 import support.gammaSupport.ThreadList;
 import support.gammaSupport.Tuple;
@@ -26,13 +27,17 @@ public class HJoin extends Thread {
 
 	private HashMap<String, ArrayList<Tuple>> storedData;
 
+	private Relation r;
+	
 	public HJoin(Connector c1, Connector c2, int jk1, int jk2, Connector o) {
 		input1 = c1.getReadEnd(); 
 		input2 = c2.getReadEnd();
 		input1JK = jk1;
 		input2JK = jk2;
 		output = o.getWriteEnd();
-
+		r = Relation.join(c1.getRelation(), c2.getRelation(), 
+				jk1, jk2);
+		o.setRelation(r);
 		storedData = new HashMap<String, ArrayList<Tuple>>();
 
 		ThreadList.add(this);

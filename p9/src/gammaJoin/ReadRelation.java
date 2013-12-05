@@ -17,12 +17,32 @@ public class ReadRelation extends Thread {
 
 	private WriteEnd out;
 	private String fileName;
+	private Connector c;
+	private Relation r;
 	public ReadRelation(String inFileName, Connector c) {
 		fileName = inFileName;
 		out = c.getWriteEnd();
+		this.c = c;
+		BufferedReader input = null;
+		try {
+			input = new BufferedReader(new FileReader(fileName));
+			Relation r = Relation.buildRelationFromString(fileName, input.readLine());
+			c.setRelation(r);
+		}catch (IOException e) {
+			ReportError.msg(this, e);
+		}finally {
+			try {
+				if (input != null) {
+					input.close();
+				}
+			} catch (IOException e2) {
+				ReportError.msg(this, e2);
+			}
+		}
 		ThreadList.add(this);
 	}
 
+	
 
 	public void run() {
 		BufferedReader input = null;
@@ -30,7 +50,7 @@ public class ReadRelation extends Thread {
 		try{
 			input = new BufferedReader(new FileReader(fileName));
 			String line = null;
-			Relation r = Relation.buildRelationFromString(fileName, input.readLine());
+			input.readLine(); // skip relation declaration
 			input.readLine(); // skip ---- ---- ---- line
 			Tuple t = null;
 			while((line = input.readLine()) != null) {
