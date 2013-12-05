@@ -74,7 +74,7 @@ public class HJoin extends Thread {
 					} 
 				}
 			} catch (IOException e) {
-				ReportError.msg(this, e);
+//				ReportError.msg(this, e);
 			}
 		}
 
@@ -104,7 +104,7 @@ public class HJoin extends Thread {
 					} 
 				}
 			} catch (IOException e) {
-				ReportError.msg(this, e);
+//				ReportError.msg(this, e);
 			}
 		}
 

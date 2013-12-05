@@ -26,7 +26,7 @@ public class ReadRelation extends Thread {
 		BufferedReader input = null;
 		try {
 			input = new BufferedReader(new FileReader(fileName));
-			Relation r = Relation.buildRelationFromString(fileName, input.readLine());
+			r = Relation.buildRelationFromString(fileName, input.readLine());
 			c.setRelation(r);
 		}catch (IOException e) {
 			ReportError.msg(this, e);
