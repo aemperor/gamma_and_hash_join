@@ -14,12 +14,14 @@ public class JoinTest {
 //		hjRefined.join("client.txt", "view.txt", 0, 0);
 //		
 //		
-		MapReducedHJoin mpHJ = new MapReducedHJoin();
-		mpHJ.join("client.txt", "view.txt", 0, 0);
+//		MapReducedHJoin mpHJ = new MapReducedHJoin();
+//		mpHJ.join("client.txt", "view.txt", 0, 0);
 		
 //		MapReducedBFilter mrBFilter = new MapReducedBFilter();
 //		mrBFilter.join("client.txt", "view.txt", 0, 0);
 		
+		Gamma g = new Gamma();
+		g.join("client.txt", "view.txt", 0, 0);
 		
 	}
 	

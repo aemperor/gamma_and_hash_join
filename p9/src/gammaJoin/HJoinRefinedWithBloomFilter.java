@@ -12,9 +12,9 @@ public class HJoinRefinedWithBloomFilter extends ArrayConnectors {
 		ThreadList.init();
 
 		Connector c1 = new Connector(input1);
-		ReadRelation r1 = new ReadRelation("client.txt", c1);
+		ReadRelation r1 = new ReadRelation(input1, c1);
 		Connector c2 = new Connector(input2);
-		ReadRelation r2 = new ReadRelation("view.txt", c2);
+		ReadRelation r2 = new ReadRelation(input2, c2);
 
 		Connector c3 = new Connector("Bloom->BFilter");
 		Connector c4 = new Connector("Bloom->HJoin");
