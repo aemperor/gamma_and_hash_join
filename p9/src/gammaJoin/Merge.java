@@ -1,94 +1,90 @@
 package gammaJoin;
 
+import java.io.IOException;
+
 import support.basicConnector.Connector;
 import support.basicConnector.ReadEnd;
 import support.basicConnector.WriteEnd;
+import support.gammaSupport.GammaConstants;
+import support.gammaSupport.Relation;
 import support.gammaSupport.ReportError;
 import support.gammaSupport.ThreadList;
 import support.gammaSupport.Tuple;
 
 public class Merge extends Thread {
-	private ReadEnd input0;
-	private ReadEnd input1;
-	private ReadEnd input2;
-	private ReadEnd input3;
+	
+	private ReadEnd [] dataIn;
+	
 	private WriteEnd output;
 
+	private int roundRobinCounter;
 	
 	int time = 100000; // 100,000 milliseconds
 	
-	public Merge (Connector c0, Connector c1, Connector c2, Connector c3, Connector o) {
-		this.input0 = c0.getReadEnd();
-		this.input1 = c1.getReadEnd();
-		this.input2 = c2.getReadEnd();
-		this.input3 = c3.getReadEnd();
-		this.output = o.getWriteEnd();
+	public Merge (Connector [] dataIn, Connector out) {
+	
+		assert (dataIn.length == GammaConstants.splitLen);
+		this.dataIn = new ReadEnd[Math.min(GammaConstants.splitLen, dataIn.length)];
+
+		roundRobinCounter = 0;
+		
+		Relation r = dataIn[0].getRelation();
+		out.setRelation(r);
+		
+		for (int i = 0; i < this.dataIn.length; i++ ){
+			if (dataIn[i] != null) {
+				this.dataIn[i] = dataIn[i].getReadEnd();
+			}else{
+				// can report error if wanted
+			}
+		}
 		
 		ThreadList.add(this);
 	}
 	
 	public void run() {
-		roundRobin();
-	}
-	
-	private void roundRobin() {
-		ReadEnd[] inputs = {input0, input1, input2, input3};
-		boolean more0 = true; // true if more to read
-		boolean more1 = true;
-		boolean more2 = true;
-		boolean more3 = true;
-		boolean temp = true;
-		int i = 0;
-		try {
-			while(more0 || more1 || more2 || more3) {
-				if (i > 3) 
-					i = 0;
-				temp = Read(inputs[i]);
-				switch(i) {
-					case (0):
-						more0 = temp;
-						break;
-					case (1):
-						more1 = temp;
-						break;
-					case (2):
-						more2 = temp;
-						break;
-					case (3):
-						more3 = temp;
-						break;
-					default:
-						break;
-				}
-				i++;
-			}
-			output.putNextString("END");
-		}
-		catch (Exception e) {
-			ReportError.msg(this, e);
-		}
-	}
-	
-	private boolean Read(ReadEnd input) {
-		boolean keepReading = true;
-		try {
-			String line = null;
-			long start = System.currentTimeMillis();
-			while ((line = input.getNextString()) != null 
-					&& ((System.currentTimeMillis() - start) < time)) {
-				if (line.indexOf("End") == 0)
-					keepReading = false;
-				else {
-					output.putNextTuple(Tuple.makeTupleFromPipeData(line));
-				}
-			}
+		
+		ReadEnd inputStream = pickStream();
+		String line = null;
+		
+		while( inputStream != null ) {
 			
-			
-		}
-		catch (Exception e) {
-			ReportError.msg(this, e);
+			try{
+				line = inputStream.getNextString();
+				if (line.indexOf("END") == 0) {
+					removeCurrentStream();
+				} else {
+					
+					output.putNextString(line);
+				
+				}
+			} catch(IOException e) {
+				inputStream = pickStream();
+			}
 		}
 		
-		return keepReading;
+		try {
+			output.putNextString("END");
+		} catch (IOException e) {
+			ReportError.msg(this, e);
+		}
 	}
+	
+	private ReadEnd pickStream(){
+		
+		int counter = dataIn.length;
+		ReadEnd r = null;
+		
+		while (r == null || counter > 0) {
+			roundRobinCounter = (++roundRobinCounter) % GammaConstants.splitLen;
+			r = dataIn[roundRobinCounter];
+		}
+		
+		return r;
+	}
+
+	private void removeCurrentStream(){
+		dataIn[roundRobinCounter] = null;
+	}
+
 }
