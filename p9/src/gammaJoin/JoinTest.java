@@ -10,8 +10,8 @@ public class JoinTest {
 //		SimpleHJoin shj = new SimpleHJoin();
 //		shj.join("clients.txt", "views.txt", 0, 0);
 		
-		SimpleHJoin shj = new SimpleHJoin();
-		shj.join("orders.txt", "odetails.txt", 0, 0);
+//		SimpleHJoin shj = new SimpleHJoin();
+//		shj.join("orders.txt", "odetails.txt", 0, 0);
 		
 //		SimpleHJoin shj = new SimpleHJoin();
 //		shj.join("parts.txt", "odetails.txt", 0, 1);
@@ -35,7 +35,7 @@ public class JoinTest {
 //		mpHJ.join("orders.txt", "odetails.txt", 0, 0);
 		
 //		MapReducedHJoin mpHJ = new MapReducedHJoin();
-//		mpHJ.join("orders.txt", "odetails.txt", 0, 1);
+//		mpHJ.join("parts.txt", "odetails.txt", 0, 1);
 		
 //		MapReducedBFilter Tests
 //		MapReducedBFilter mrBFilter = new MapReducedBFilter();
@@ -54,8 +54,8 @@ public class JoinTest {
 //		Gamma g = new Gamma();
 //		g.join("orders.txt", "odetails.txt", 0, 0);
 		
-//		Gamma g = new Gamma();
-//		g.join("parts.txt", "odetails.txt", 0, 1);
+		Gamma g = new Gamma();
+		g.join("parts.txt", "odetails.txt", 0, 1);
 		
 	}
 	

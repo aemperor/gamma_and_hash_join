@@ -52,7 +52,7 @@ public class MapReducedBloom extends ArrayConnectors {
 		HJoin dataJoin = new HJoin(joinInput1, joinInput2, jk1, jk2, dataOut);
 		
 		Print p = new Print(dataOut);
-		System.out.println("In bloom map reduce");
+//		System.out.println("In bloom map reduce");
 		try {
 			ThreadList.run(p);
 		} catch (InterruptedException e) {

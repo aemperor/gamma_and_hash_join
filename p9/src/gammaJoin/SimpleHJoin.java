@@ -16,7 +16,7 @@ public class SimpleHJoin extends ThreadList {
 		Connector c2 = new Connector("input2");
 		ReadRelation r2 = new ReadRelation(input2, c2);
 		Connector o = new Connector("output");
-		HJoin hj = new HJoin(c1, c2, 0, 0, o);
+		HJoin hj = new HJoin(c1, c2, jk1,jk2, o);
 		Print p = new Print(o);
 		
 		try{
