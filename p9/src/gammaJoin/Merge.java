@@ -16,16 +16,16 @@ public class Merge extends StreamMerger {
 	
 	public void run() {
 		
-		ReadEnd inputStream = this.pickStream();
+		ReadEnd inputStream = pickStream();
 		String line = null;
 
 		while( inputStream != null ) {
 			try{
 				while((line = inputStream.getNextString()) != null) {
 					if (line.indexOf("END") == 0) {
-						super.removeCurrentStream();
+						removeCurrentStream();
 					} else {
-						super.output.putNextString(line);
+						output.putNextString(line);
 					}
 				}
 			} catch(IOException e) {
@@ -34,7 +34,7 @@ public class Merge extends StreamMerger {
 		}
 		
 		try {
-			super.output.putNextString("END");
+			output.putNextString("END");
 		} catch (IOException e) {
 			ReportError.msg(this, e);
 		}
