@@ -77,7 +77,6 @@ public class HJoin extends Thread {
 			
 			}
 		}
-
 	}
 
 	private List<Tuple> joinResults() {
@@ -103,7 +102,7 @@ public class HJoin extends Thread {
 					} 
 				}
 			} catch (IOException e) {
-//				ReportError.msg(this, e);
+			
 			}
 		}
 
@@ -111,6 +110,7 @@ public class HJoin extends Thread {
 	}
 
 	private void outputResults(List<Tuple> tuplesToSend) {
+
 		try{
 			
 			for(Tuple t : tuplesToSend) {

@@ -28,8 +28,9 @@ public class Merge extends Thread {
 
 		roundRobinCounter = 0;
 		
+		output = out.getWriteEnd();
 		Relation r = dataIn[0].getRelation();
-		out.setRelation(r);
+		output.setRelation(r);
 		
 		for (int i = 0; i < this.dataIn.length; i++ ){
 			if (dataIn[i] != null) {
@@ -48,17 +49,16 @@ public class Merge extends Thread {
 		String line = null;
 		
 		while( inputStream != null ) {
-			
 			try{
-				line = inputStream.getNextString();
-				if (line.indexOf("END") == 0) {
-					removeCurrentStream();
-				} else {
-					
-					output.putNextString(line);
-				
+				while((line = inputStream.getNextString()) != null) {
+					if (line.indexOf("END") == 0) {
+						removeCurrentStream();
+					} else {
+						output.putNextString(line);
+					}
 				}
 			} catch(IOException e) {
+				
 				inputStream = pickStream();
 			}
 		}
@@ -72,12 +72,13 @@ public class Merge extends Thread {
 	
 	private ReadEnd pickStream(){
 		
-		int counter = dataIn.length;
 		ReadEnd r = null;
+		int counter = GammaConstants.splitLen;
 		
-		while (r == null || counter > 0) {
+		while ( r == null && counter > 0) {
 			roundRobinCounter = (++roundRobinCounter) % GammaConstants.splitLen;
 			r = dataIn[roundRobinCounter];
+			counter--;
 		}
 		
 		return r;

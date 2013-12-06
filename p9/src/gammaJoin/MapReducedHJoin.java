@@ -8,6 +8,7 @@ public class MapReducedHJoin extends ThreadList {
 
 	
 	public void join(String input1, String input2, int jk1, int jk2) {
+		ThreadList.init();
 		
 		Connector dataIn1 = new Connector("Reader->HSplit1");
 		Connector dataIn2 = new Connector("Reader->HSplit2");
@@ -27,7 +28,7 @@ public class MapReducedHJoin extends ThreadList {
 		
 		HSplit in1Split = new HSplit(dataIn1, jk1, inputConnectors1);
 		
-		HSplit in2Split = new HSplit(dataIn1, jk2, inputConnectors2);
+		HSplit in2Split = new HSplit(dataIn2, jk2, inputConnectors2);
 		
 		HJoin [] dataJoin = new HJoin[GammaConstants.splitLen];
 		

@@ -58,7 +58,7 @@ public class HSplit extends Thread {
 					}
 					else {
 						t = Tuple.makeTupleFromPipeData(line);
-//						String key = t.get(joinKey);
+						
 						index = BMap.myhash(t.get(joinKey));
 						writeMap[index].putNextString(line);
 					}

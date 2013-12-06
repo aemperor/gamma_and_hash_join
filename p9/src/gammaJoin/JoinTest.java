@@ -8,9 +8,8 @@ public class JoinTest {
 //		SimpleHJoin shj = new SimpleHJoin();
 //		shj.join("clients.txt", "views.txt", 0, 0);
 		
-		HJoinRefinedWithBloomFilter hjRefined = new HJoinRefinedWithBloomFilter();
-		hjRefined.join("clients.txt", "views.txt", 0, 0);
-		
+		MapReducedHJoin hjRefined = new MapReducedHJoin();
+		hjRefined.join("client.txt", "view.txt", 0, 0);
 		
 	}
 	
