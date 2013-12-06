@@ -6,7 +6,9 @@ import support.basicConnector.Connector;
 import support.basicConnector.ReadEnd;
 import support.basicConnector.WriteEnd;
 import support.gammaSupport.BMap;
+import support.gammaSupport.Relation;
 import support.gammaSupport.ReportError;
+import support.gammaSupport.ThreadList;
 import support.gammaSupport.Tuple;
 
 public class Bloom extends Thread {
@@ -17,10 +19,15 @@ public class Bloom extends Thread {
 	private int joinKey;
 	
 	public Bloom (Connector input, Connector outData,Connector outMap, int joinKey) {
+		
 		this.input = input;
 		this.outData = outData;
+		this.outData.setRelation(input.getRelation());
 		this.outMap = outMap;
+		this.outMap.setRelation(Relation.dummy);
 		this.joinKey = joinKey;
+		
+		ThreadList.add(this);
 	}
 	
 	public void run() {
@@ -29,7 +36,7 @@ public class Bloom extends Thread {
 		boolean keepReading = true;
 		ReadEnd re = input.getReadEnd();
 		WriteEnd wr = outData.getWriteEnd();// data pipe
-		
+		int counter = 0;
 		while(keepReading) {
 			
 			try{
@@ -38,7 +45,9 @@ public class Bloom extends Thread {
 					
 					if (line.indexOf("END") == 0) {
 						keepReading = false;
+						wr.putNextString("END");
 					} else {
+						counter++;
 						Tuple t = Tuple.makeTupleFromPipeData(line);
 						// record hash value
 						bitMap.setValue(t.get(joinKey), true);
@@ -47,19 +56,18 @@ public class Bloom extends Thread {
 					}
 				}
 			} catch (IOException e) {
-				ReportError.msg(this, e);
+//				ReportError.msg(this, e);
 			}
 		}
+		
 		wr = outMap.getWriteEnd();
 		try {
-		
 			wr.putNextString(bitMap.getBloomFilter());
 			wr.putNextString("END");
-		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
-	
 	
 }

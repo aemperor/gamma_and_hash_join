@@ -21,10 +21,12 @@ public class BFilter extends Thread {
 	
 	public BFilter (Connector dataInput, Connector mapInput, Connector dataOut, int joinKey) {
 		
-		
 		this.dataIn = dataInput;
 		this.mapInput = mapInput;
+		
 		this.dataOut = dataOut;
+		this.dataOut.setRelation(this.dataIn.getRelation());
+		
 		this.joinKey = joinKey;
 		
 		ThreadList.add(this);
@@ -37,8 +39,8 @@ public class BFilter extends Thread {
 		
 		BMap bitMap = readMap();
 		ReadEnd re = dataIn.getReadEnd();
-		List<String> outputData; outputData = new LinkedList<String>();
-		
+		List<String> outputData = new LinkedList<String>();
+
 		while( keepReading ) {
 			
 			try {
@@ -47,7 +49,7 @@ public class BFilter extends Thread {
 					if (line.indexOf("END") == 0) {
 						keepReading = false;
 					} else {
-						Tuple t = Tuple.makeTupleFromFileData(dataIn.getRelation(), line);
+						Tuple t = Tuple.makeTupleFromPipeData(line);
 						// if hash map has record of that key add tuple to the list
 						if (bitMap.getValue(t.get(joinKey))) {
 							outputData.add(line);
@@ -55,7 +57,7 @@ public class BFilter extends Thread {
 					}
 				}
 			} catch (IOException e ){
-				ReportError.msg(this, e);
+//				ReportError.msg(this, e);
 			}
 		}
 		// pass data along the pipe
@@ -63,7 +65,7 @@ public class BFilter extends Thread {
 	}
 	
 	private void sendData(List<String> data) {
-		
+
 		try {
 			WriteEnd we = dataOut.getWriteEnd();
 			for(String tuple : data) {
@@ -75,8 +77,6 @@ public class BFilter extends Thread {
 		} catch (IOException e ) {
 			ReportError.msg(this, e);
 		}
-		
-		
 	}
 	
 	private BMap readMap() {
@@ -100,8 +100,9 @@ public class BFilter extends Thread {
 					} 
 				}
 			} catch (IOException e ) {
-				ReportError.msg(this, e);
+//				ReportError.msg(this, e);
 			}			
+		
 		}
 		
 		assert(readMap != null);

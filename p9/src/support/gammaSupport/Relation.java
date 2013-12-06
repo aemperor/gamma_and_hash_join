@@ -86,4 +86,14 @@ public class Relation {
         }
         return true;
     }
+    
+    @Override
+    public String toString() {
+    	StringBuffer b = new StringBuffer();
+    	
+    	for (String f : fieldNames) {
+    		b.append(f + "\t");
+    	}
+    	return b.toString();
+    }
 }

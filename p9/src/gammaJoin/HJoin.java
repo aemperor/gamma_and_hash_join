@@ -24,7 +24,6 @@ public class HJoin extends Thread {
 	private int input2JK;
 
 
-
 	private HashMap<String, ArrayList<Tuple>> storedData;
 
 	private Relation r;
@@ -59,6 +58,7 @@ public class HJoin extends Thread {
 				String line = null;
 				Tuple t = null;
 				while( (line = input1.getNextString() ) != null){
+
 					if (line.indexOf("END") == 0) {
 						continueReading = false;
 					} else {
@@ -74,10 +74,9 @@ public class HJoin extends Thread {
 					} 
 				}
 			} catch (IOException e) {
-//				ReportError.msg(this, e);
+			
 			}
 		}
-
 
 	}
 

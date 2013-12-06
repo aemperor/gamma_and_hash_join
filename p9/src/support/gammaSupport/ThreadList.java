@@ -28,7 +28,7 @@ public class ThreadList implements GammaConstants {
         }
     }
 
-    public static void run(Thread last) throws Exception {
+    public static void run(Thread last) throws InterruptedException {
         try {
             Connector.verifyRelationSet();
             for (Thread t : tl) {
@@ -39,7 +39,7 @@ public class ThreadList implements GammaConstants {
             }
 
             last.join();
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             ReportError.msg("exception in ThreadList.run: " + e.getMessage());
         }
     }
