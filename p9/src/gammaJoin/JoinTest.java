@@ -10,15 +10,15 @@ public class JoinTest {
 //		
 //		
 //		
-//		MapReducedBloom hjRefined = new MapReducedBloom();
-//		hjRefined.join("client.txt", "view.txt", 0, 0);
+		MapReducedBloom hjRefined = new MapReducedBloom();
+		hjRefined.join("client.txt", "view.txt", 0, 0);
 //		
 //		
 //		MapReducedHJoin mpHJ = new MapReducedHJoin();
 //		mpHJ.join("client.txt", "view.txt", 0, 0);
 		
-		MapReducedBFilter mrBFilter = new MapReducedBFilter();
-		mrBFilter.join("client.txt", "view.txt", 0, 0);
+//		MapReducedBFilter mrBFilter = new MapReducedBFilter();
+//		mrBFilter.join("client.txt", "view.txt", 0, 0);
 		
 		
 	}
