@@ -11,16 +11,15 @@ public class MapReducedHJoin extends ArrayConnectors {
 	public void join(String input1, String input2, int jk1, int jk2) {
 		ThreadList.init();
 		
-		Connector[] inputs = ArrayConnectors.initConnectorArray("dataIn");
-		inputs[0] = new Connector("Reader->HSplit1");
-		inputs[1] = new Connector("Reader->HSplit2");
+		Connector dataIn1 = new Connector("Reader->HSplit1");
+		Connector dataIn2 = new Connector("Reader->HSplit2");
 		
-		ReadRelation reader1 = new ReadRelation(input1, inputs[0]);
-		ReadRelation reader2 = new ReadRelation(input2, inputs[1]);
+		ReadRelation reader1 = new ReadRelation(input1, dataIn1);
+		ReadRelation reader2 = new ReadRelation(input2, dataIn2);
 		
-		Connector [] inputConnectors1 = ArrayConnectors.initConnectorArray("inputConnectors1");
-		Connector [] inputConnectors2 = ArrayConnectors.initConnectorArray("inputConnectors2");
-		Connector [] hJoinMergetConn = ArrayConnectors.initConnectorArray("hJoinMergetConn");
+		Connector [] inputConnectors1 = new Connector[GammaConstants.splitLen];
+		Connector [] inputConnectors2 = new Connector[GammaConstants.splitLen];
+		Connector [] hJoinMergetConn = new Connector[GammaConstants.splitLen];
 		
 		for (int i = 0; i < GammaConstants.splitLen; ++i){
 			inputConnectors1[i] = new Connector("HSplit->HJoin_1_" + i);
@@ -28,9 +27,9 @@ public class MapReducedHJoin extends ArrayConnectors {
 			hJoinMergetConn [i] = new Connector("HJoin_" + i +"->Merge");
 		} 
 		
-		HSplit in1Split = new HSplit(inputs[0], jk1, inputConnectors1);
+		HSplit in1Split = new HSplit(dataIn1, jk1, inputConnectors1);
 		
-		HSplit in2Split = new HSplit(inputs[1], jk2, inputConnectors2);
+		HSplit in2Split = new HSplit(dataIn2, jk2, inputConnectors2);
 		
 		HJoin [] dataJoin = new HJoin[GammaConstants.splitLen];
 		
