@@ -1,9 +1,13 @@
 package gammaJoin;
 
+import java.io.IOException;
+
 import support.basicConnector.Connector;
 import support.basicConnector.ReadEnd;
 import support.basicConnector.WriteEnd;
 import support.gammaSupport.BMap;
+import support.gammaSupport.GammaConstants;
+import support.gammaSupport.Relation;
 import support.gammaSupport.ReportError;
 import support.gammaSupport.ThreadList;
 
@@ -12,18 +16,17 @@ import support.gammaSupport.ThreadList;
 public class SplitM extends Thread {
 	
 	private ReadEnd input;
-	private WriteEnd output0;
-	private WriteEnd output1;
-	private WriteEnd output2;
-	private WriteEnd output3;
+	private WriteEnd [] outData;
 	
-	
-	public SplitM (Connector c, Connector o0, Connector o1, Connector o2, Connector o3) {
-		this.input = c.getReadEnd();
-		this.output0 = o0.getWriteEnd();
-		this.output1 = o1.getWriteEnd();
-		this.output2 = o2.getWriteEnd();
-		this.output3 = o3.getWriteEnd();
+	public SplitM (Connector dataIn, Connector[] connectors) {
+		
+		this.input = dataIn.getReadEnd();
+		outData = new WriteEnd[GammaConstants.splitLen];
+		
+		for (int i = 0; i < outData.length; i++) {
+			outData[i] = connectors[i].getWriteEnd();
+			connectors[i].setRelation(Relation.dummy);
+		}
 		
 		ThreadList.add(this);
 	}
@@ -33,35 +36,21 @@ public class SplitM extends Thread {
 	}
 
 	private void split() {
-		BMap bit = readMap();
-		boolean[][] map = bit.getMap();
-		int interval = bit.splitLen/4;
-		try {
-			// this is a horrible way of doing this but all I could think of
-			// at 3am 
-			for (int i = 0; i < bit.splitLen; i++) {
-				for (int j = 0; j < bit.mapSize; j++) {
-					if (i <= bit.splitLen/4) {
-						output0.putNextString(String.valueOf(map[i][j]));
-					if (i > interval && i <= (interval*2))
-						output1.putNextString(String.valueOf(map[i][j]));
-					if (i > (interval*2) && i <= (interval*3)) 
-						output2.putNextString(String.valueOf(map[i][j]));
-					if (i > (interval*3) && i <= (interval*4))
-						output3.putNextString(String.valueOf(map[i][j]));
-					}
-				}
-			}
-			output0.putNextString("END");
-			output1.putNextString("END");
-			output2.putNextString("END");
-			output3.putNextString("END");
-		}
-		catch (Exception e) {
-			ReportError.msg(this, e);
-		}
+		String dataMap = readMap().getBloomFilter();
 		
+		for (int i = 0; i < outData.length; i++) {
+			try {
+				
+				outData[i].putNextString(BMap.mask(dataMap, i));
+				outData[i].putNextString("END");
+			
+			} catch (IOException e) {
+				ReportError.msg(this, e);
+			}
+		} 
 	}
+	
+	
 	
 	private BMap readMap() {
 		boolean keepReading = true;
@@ -81,7 +70,7 @@ public class SplitM extends Thread {
 				}
 			}
 			catch (Exception e) {
-				ReportError.msg(this, e);
+			
 			}
 		}
 		
