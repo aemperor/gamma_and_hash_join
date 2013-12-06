@@ -4,8 +4,9 @@ import support.basicConnector.Connector;
 import support.gammaSupport.GammaConstants;
 import support.gammaSupport.ReportError;
 import support.gammaSupport.ThreadList;
+import support.gammaSupport.ArrayConnectors;
 
-public class MapReducedBFilter extends ThreadList {
+public class MapReducedBFilter extends ArrayConnectors {
 
 	public void join(String input1, String input2, int jk1, int jk2) {
 		ThreadList.init();

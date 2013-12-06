@@ -3,8 +3,9 @@ package gammaJoin;
 import support.basicConnector.Connector;
 import support.gammaSupport.GammaConstants;
 import support.gammaSupport.ThreadList;
+import support.gammaSupport.ArrayConnectors;
 
-public class MapReducedHJoin extends ThreadList {
+public class MapReducedHJoin extends ArrayConnectors {
 
 	
 	public void join(String input1, String input2, int jk1, int jk2) {
